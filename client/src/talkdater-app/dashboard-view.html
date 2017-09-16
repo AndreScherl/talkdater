@@ -1,0 +1,28 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="dater-element.html">
+<link rel="import" href="interests-element.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="dashboard-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <h1>Vorname Nachname</h1>
+    <dater-element></dater-element>
+    <interests-element></interests-element>
+  </template>
+
+  <script>
+    class DashboardView extends Polymer.Element {
+      static get is() { return 'dashboard-view'; }
+    }
+
+    window.customElements.define(DashboardView.is, DashboardView);
+  </script>
+</dom-module>

@@ -1,0 +1,30 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="login-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <h1>Login</h1>
+    <paper-input label='E-Mail' type='email'></paper-input>
+    <paper-input label='Passwort' type='password'></paper-input>
+    <paper-button name='submit' type='submit'>Login</paper-button>
+    <paper-button name='register' type='button'>Registrieren</paper-button>
+  </template>
+
+  <script>
+    class LoginView extends Polymer.Element {
+      static get is() { return 'login-view'; }
+    }
+
+    window.customElements.define(LoginView.is, LoginView);
+  </script>
+</dom-module>

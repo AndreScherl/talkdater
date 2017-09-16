@@ -1,0 +1,130 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../../bower_components/app-route/app-location.html">
+<link rel="import" href="../../bower_components/app-route/app-route.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="lazy-import" href="login-view.html">
+<link rel="lazy-import" href="dashboard-view.html">
+<link rel="lazy-import" href="register-view.html">
+<link rel="lazy-import" href="meeting-setter-view.html">
+
+<dom-module id="talkdater-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+
+        display: block;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+    </style>
+    <!-- app-location binds to the app's URL -->
+    <app-location route="{{route}}"></app-location>
+
+    <!-- this app-route manages the top-level routes -->
+    <app-route
+        route="{{route}}"
+        pattern="[[rootPattern]]:page"
+        data="{{routeData}}"
+        tail="{{subroute}}">      
+    </app-route>
+
+    <!-- here comes the header -->
+    <app-header reveals>
+      <app-toolbar>
+        <div main-title>Talk Dater</div>
+      </app-toolbar>
+    </app-header>
+
+    <!-- main content -->
+    <iron-pages
+        selected="[[page]]"
+        attr-for-selected="name"
+        role="main">
+      <dashboard-view name="dashboard"></dashboard-view>
+      <login-view name="login"></login-view>
+      <register-view name="register"></register-view>
+      <meeting-setter-view name="meeting-setter"></meeting-setter-view>
+    </iron-pages>
+  </template>
+
+  <script>
+    /**
+     * @customElement
+     * @polymer
+     */
+    class TalkdaterApp extends Polymer.Element {
+      static get is() { return 'talkdater-app'; }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'talkdater-app'
+          }
+        };
+      }
+
+      static get properties() {
+        return {
+          page: {
+            type: String,
+            reflectToAttribute: true,
+            observer: '_pageChanged',
+          },
+          rootPattern: String,
+          routeData: Object,
+          subroute: String,
+        };
+      }
+
+      static get observers() {
+        return [
+          '_routePageChanged(routeData.page)',
+        ];
+      }
+
+      constructor() {
+        super();
+
+        // Get root pattern for app-route, for more info about `rootPath` see:
+        // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
+        this.rootPattern = (new URL(this.rootPath)).pathname;
+      }
+
+      _routePageChanged(page) {
+        // Polymer 2.0 will call with `undefined` on initialization.
+        // Ignore until we are properly called with a string.
+        if (page === undefined) {
+          return;
+        }
+
+        // If no page was found in the route data, page will be an empty string.
+        // Deault to 'login' in that case.
+        this.page = page || 'login';
+      }
+
+      _pageChanged(page) {
+        // Load page import on demand. Show 404 page if fails
+        var resolvedPageUrl = this.resolveUrl(page + '-view.html');
+        Polymer.importHref(
+            resolvedPageUrl,
+            null,
+            this._showPage404.bind(this),
+            true);
+      }
+
+      _showPage404() {
+        this.page = 'view404';
+      }
+    }
+
+    window.customElements.define(TalkdaterApp.is, TalkdaterApp);
+  </script>
+</dom-module>

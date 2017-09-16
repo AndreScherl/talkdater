@@ -1,0 +1,31 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="register-view">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <h1>Register</h1>
+    <paper-input name='email' label='E-Mail' type='email'></paper-input>
+    <paper-input name='password' label='Passwort' type='password'></paper-input>
+    <paper-input name='retyped_password' label='Passwort wiederholen' type='password'></paper-input>
+    <paper-button name='submit' type='submit'>Senden</paper-button>
+    <paper-button name='cancel' type='reset'>Abbrechen</paper-button>
+  </template>
+
+  <script>
+    class RegisterView extends Polymer.Element {
+      static get is() { return 'register-view'; }
+    }
+
+    window.customElements.define(RegisterView.is, RegisterView);
+  </script>
+</dom-module>

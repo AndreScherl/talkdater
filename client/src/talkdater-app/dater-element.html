@@ -1,0 +1,38 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="dater-element">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+    <paper-card heading="Status">
+      <div class="card-content">
+        Du hast kein Treffen ausgemacht. Trau dich!
+      </div>
+      <div class="card-actions">
+        <paper-button name="cancel_date">Treffen absagen</paper-button>
+        <paper-button name="make_date">Treffen annoncieren</paper-button>
+      </div>
+    </paper-card>
+    
+  </template>
+
+  <script>
+    class DaterElement extends Polymer.Element {
+      static get is() { return 'dater-element'; }
+
+      constructor () {
+        super();
+      }
+    }
+
+    window.customElements.define(DaterElement.is, DaterElement);
+  </script>
+</dom-module>

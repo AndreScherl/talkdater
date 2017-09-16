@@ -1,0 +1,7 @@
+{
+  "name": "talkdater",
+  "short_name": "talkdater",
+  "description": "Find people to talk with respect to shared interests.",
+  "start_url": "/",
+  "display": "standalone"
+}

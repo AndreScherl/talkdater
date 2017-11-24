@@ -49,7 +49,7 @@
         attr-for-selected="name"
         role="main">
       <dashboard-view name="dashboard"></dashboard-view>
-      <login-view name="login"></login-view>
+      <login-view name="login" on-changepage="changePage"></login-view>
       <register-view name="register"></register-view>
       <meeting-setter-view name="meeting-setter"></meeting-setter-view>
     </iron-pages>
@@ -86,7 +86,7 @@
 
       static get observers() {
         return [
-          '_routePageChanged(routeData.page)',
+          '_routePageChanged(routeData.page)'
         ];
       }
 
@@ -122,6 +122,10 @@
 
       _showPage404() {
         this.page = 'view404';
+      }
+
+      changePage(e) {
+        this.page = e.detail.page;
       }
     }
 

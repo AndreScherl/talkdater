@@ -17,19 +17,27 @@
     <paper-input label='E-Mail' type='email'></paper-input>
     <paper-input label='Passwort' type='password'></paper-input>
     <paper-button name='submit' type='submit' on-click="login">Login</paper-button>
-    <paper-button name='register' type='button'>Registrieren</paper-button>
+    <paper-button name='register' type='button' on-click="register">Registrieren</paper-button>
   </template>
 
   <script>
     class LoginView extends Polymer.Element {
       static get is() { return 'login-view'; }
 
-      login () {
+      login() {
         // to do: ajax or something else to do a real login
         // [login code...]
 
-        // after successfully login route to dashboard view
-        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: 'dashboard'}, composed: true}));
+        // after successful login route to dashboard view
+        this._routeToPage('dashboard');
+      }
+
+      register() {
+        this._routeToPage('register');
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
       }
     }
 

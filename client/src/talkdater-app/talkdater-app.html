@@ -4,6 +4,7 @@
 <link rel="import" href="../../bower_components/app-route/app-location.html">
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../../bower_components/iron-image/iron-image.html">
 
 <link rel="lazy-import" href="login-view.html">
 <link rel="lazy-import" href="dashboard-view.html">
@@ -21,10 +22,47 @@
       }
 
       app-header {
-        color: #fff;
-        background-color: var(--app-primary-color);
+        border-bottom: 2px solid #007d4d;
       }
+      app-toolbar {
+        background-color: white;
+        box-shadow: 0px 5px 6px -3px rgba(0, 0, 0, 0.4);
+      }         
+
+      .content {
+        padding: 16px 40px;
+      }      
+      .card {
+        background-color: white;
+        max-width: 720px;
+        height: 500px;
+        margin: 16px auto;
+        padding: 20px;
+        box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
+      }
+      @media (max-width: 600px) {
+        .content {
+          padding: 0;
+        }
+        .card {
+          margin: 8px;
+        }
+      }      
+
+      /*currently not applied to login-view - pasted inside login*/
+      /*how to set global styling*/
+      paper-input {
+        --paper-input-container-focus-color: #22934e;
+        --paper-input-container-invalid-color: red;
+      }
+
+
+
     </style>
+    <!--            -->
+    <!-- HTML BEGIN -->
+    <!--            -->
+
     <!-- app-location binds to the app's URL -->
     <app-location route="{{route}}"></app-location>
 
@@ -36,23 +74,35 @@
         tail="{{subroute}}">      
     </app-route>
 
-    <!-- here comes the header -->
+    <!-- header -->
     <app-header reveals>
       <app-toolbar>
+        <iron-image style="width:70px; height:70px;" sizing="contain" src="/data/images/isb.png" ></iron-image>
         <div main-title>Talk Dater</div>
+        <paper-icon-button icon="menu"></paper-icon-button>
+        <!-- alternativ icon="more-vert" -->
+        <paper-progress value="10" indeterminate bottom-item class="green"></paper-progress>
       </app-toolbar>
     </app-header>
 
     <!-- main content -->
-    <iron-pages
-        selected="[[page]]"
-        attr-for-selected="name"
-        role="main">
-      <dashboard-view name="dashboard"></dashboard-view>
-      <login-view name="login" on-changepage="changePage"></login-view>
-      <register-view name="register"></register-view>
-      <meeting-setter-view name="meeting-setter"></meeting-setter-view>
-    </iron-pages>
+    <div class="content">
+      <div class="card">
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            role="main">
+          <dashboard-view name="dashboard"></dashboard-view>
+          <login-view name="login" on-changepage="changePage"></login-view>
+          <register-view name="register"></register-view>
+          <meeting-setter-view name="meeting-setter"></meeting-setter-view>
+        </iron-pages>
+      </div>
+    </div>
+
+    <!--            -->
+    <!-- HTML END -->
+    <!--            -->
   </template>
 
   <script>

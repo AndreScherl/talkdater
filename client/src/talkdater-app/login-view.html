@@ -11,18 +11,60 @@
 
         padding: 10px;
       }
+      
+      paper-input {
+        --paper-input-container-focus-color: #22934e;
+        --paper-input-container-invalid-color: red;
+      }
+
+      #password_input {
+        margin-bottom: 25px;
+      }
+
+      .links paper-button {
+        color: grey;
+        margin-top: 10px;
+        font-size: 70%;
+      }
+            
     </style>
 
-    <h1>Login</h1>
-    <paper-input label='E-Mail' type='email'></paper-input>
-    <paper-input label='Passwort' type='password'></paper-input>
-    <paper-button name='submit' type='submit'>Login</paper-button>
-    <paper-button name='register' type='button'>Registrieren</paper-button>
+    <paper-input id="user_input" name="user" label="E-Mail"></paper-input>
+    <paper-input id="password_input" name="password" label="Passwort" type="password"></paper-input>
+    <paper-button on-click="login" raised elevation="1" style="float: right; width: 120px;">Login</paper-button>
+    
+    <div class="links">
+    <paper-button on-click="forgot_password">Passwort vergessen</paper-button>
+    <paper-button on-click="register">Registrieren</paper-button>
+
   </template>
 
   <script>
     class LoginView extends Polymer.Element {
       static get is() { return 'login-view'; }
+
+      login() {
+        // to do: ajax or something else to do a real login
+        // [login code...]
+
+        // after successful login route to dashboard view
+        this._routeToPage('dashboard');
+      }
+
+      forgot_password() {
+        //maybe route to forgot password page or directly ask for mail and apply logic
+        console.log("forgot_password");
+
+        // this._routeToPage('forgot-password');
+      }
+
+      register() {
+        this._routeToPage('register');
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
     }
 
     window.customElements.define(LoginView.is, LoginView);

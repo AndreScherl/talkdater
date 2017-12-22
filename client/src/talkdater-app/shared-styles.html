@@ -22,8 +22,14 @@
       }
 
       .notification {
+        opacity: 0;
         text-align: center;
         color: #22934e;
+      }
+
+      .notification.show {
+        transition: all 0.5s ease;
+        opacity: 1;
       }
 
 

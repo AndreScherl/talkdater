@@ -1,0 +1,68 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="register-step2-view">
+  <template>
+    <style include="shared-styles">
+
+      #continue, #save_interest {
+        width: 120px;
+        float: right;
+      }
+            
+    </style>
+
+    <h1>Hallo Name / bei Talkdater</h1>
+    <p>Wie funktioniert es?</p>
+    <p>Erklärungstext ... </p>
+
+    <p>Damit das ganze funktioniert gib hier deine Interessen ein - es können mehrere Interessen eingegeben werden, drücke nur nach jeder Eingabe auf Speichern. In grau siehst du welche Interressen schon von anderen eingegeben wurden. <br>Die eingegeben Interessen können übrigens jederzeit geändert werden.</p>
+    <div class="notification"></div>
+    <paper-input class="submit_margin" name="interest_input" label="Interressen"></paper-input>
+
+    <paper-button id="continue" on-click="continue" raised elevation="1">Weiter</paper-button>
+    <paper-button id="save_interest" on-click="save_interest" raised elevation="1">Speichern</paper-button>
+    
+  </template>
+
+  <script>
+    class RegisterStep2View extends Polymer.Element {
+      static get is() { return 'register-step2-view'; }
+
+      continue() {
+        //check login?
+
+        this._routeToPage('dashboard');
+      }
+
+      save_interest() {
+        //save interest
+        let saved = true;
+
+        //show notification mail sent
+        if (saved) {
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Interesse gespeichert";
+          Polymer.dom(this.root).querySelector('.notification').classList.add("show");
+        } else {
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Fehler beim Speichern";
+          Polymer.dom(this.root).querySelector('.notification').classList.add("show");
+          Polymer.dom(this.root).querySelector('.notification').classList.add("warning");
+        }
+
+        //hide message after timeout
+        setTimeout(function() {
+          Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
+          Polymer.dom(this.root).querySelector('.notification').classList.remove('warning');;
+        }.bind(this), 5000);        
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
+    }
+
+    window.customElements.define(RegisterStep2View.is, RegisterStep2View);
+  </script>
+</dom-module>

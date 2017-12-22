@@ -6,9 +6,6 @@
 <dom-module id="login-view">
   <template>
     <style include="shared-styles">
-      #password_input {
-        margin-bottom: 25px;
-      }
 
       #login {
         float: right;
@@ -23,9 +20,10 @@
             
     </style>
 
+    <h1>Login</h1>
     <div class="notification"></div>
     <paper-input id="user_input" name="user" label="E-Mail"></paper-input>
-    <paper-input id="password_input" name="password" label="Passwort" type="password"></paper-input>
+    <paper-input id="password_input" name="password" class="submit_margin" label="Passwort" type="password"></paper-input>
     <paper-button id="login" on-click="login" raised elevation="1">Login</paper-button>
     
     <div class="links">

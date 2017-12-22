@@ -10,6 +10,7 @@
 <link rel="lazy-import" href="reset-password-view.html">
 <link rel="lazy-import" href="dashboard-view.html">
 <link rel="lazy-import" href="register-view.html">
+<link rel="lazy-import" href="register-step2-view.html">
 <link rel="lazy-import" href="meeting-setter-view.html">
 
 <dom-module id="talkdater-app">
@@ -86,7 +87,8 @@
             role="main">
           <dashboard-view name="dashboard"></dashboard-view>
           <login-view name="login" on-changepage="changePage"></login-view>
-          <register-view name="register"></register-view>
+          <register-view name="register" on-changepage="changePage"></register-view>
+          <register-step2-view name="register-step2" on-changepage="changePage"></register-step2-view>
           <meeting-setter-view name="meeting-setter"></meeting-setter-view>
           <reset-password-view name="reset-password" on-changepage="changePage"></reset-password-view>
         </iron-pages>

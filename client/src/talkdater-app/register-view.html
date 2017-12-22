@@ -7,19 +7,47 @@
   <template>
     <style include="shared-styles">
 
+      #submit {
+        float: right;
+        width: 120px;
+      }
+
+      .links paper-button {
+        color: grey;
+        margin-top: 10px;
+        font-size: 70%;
+      }
+
     </style>
 
-    <h1>Register</h1>
+    <h1>Registrieren</h1>
+    <paper-input name='Name' label='Name (optional)' type='string'></paper-input>
     <paper-input name='email' label='E-Mail' type='email'></paper-input>
     <paper-input name='password' label='Passwort' type='password'></paper-input>
-    <paper-input name='retyped_password' label='Passwort wiederholen' type='password'></paper-input>
-    <paper-button name='submit' type='submit'>Senden</paper-button>
-    <paper-button name='cancel' type='reset'>Abbrechen</paper-button>
+    <paper-input name='retyped_password' class="submit_margin" label='Passwort wiederholen' type='password'></paper-input>
+    <paper-button id='submit' raised elevation="1" name='submit'  on-click="submit" type='submit'>Registrieren</paper-button>
+    <!-- <paper-button raised elevation="1" name='cancel' on-click="cancel" type='reset'>Abbrechen</paper-button> -->
+
+    <div class="links">
+      <paper-button on-click="to_login">Zum Login</paper-button>
+    </div>
   </template>
 
   <script>
     class RegisterView extends Polymer.Element {
       static get is() { return 'register-view'; }
+
+      to_login() {
+        this._routeToPage('login');
+      }
+
+      submit() {
+        this._routeToPage('register-step2');
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
     }
 
     window.customElements.define(RegisterView.is, RegisterView);

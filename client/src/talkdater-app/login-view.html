@@ -10,6 +10,11 @@
         margin-bottom: 25px;
       }
 
+      #login {
+        float: right;
+        width: 120px;
+      }
+
       .links paper-button {
         color: grey;
         margin-top: 10px;
@@ -20,11 +25,12 @@
 
     <paper-input id="user_input" name="user" label="E-Mail"></paper-input>
     <paper-input id="password_input" name="password" label="Passwort" type="password"></paper-input>
-    <paper-button on-click="login" raised elevation="1" style="float: right; width: 120px;">Login</paper-button>
+    <paper-button id="login" on-click="login" raised elevation="1">Login</paper-button>
     
     <div class="links">
-    <paper-button on-click="forgot_password">Passwort vergessen</paper-button>
-    <paper-button on-click="register">Registrieren</paper-button>
+      <paper-button on-click="forgot_password">Passwort vergessen</paper-button>
+      <paper-button on-click="register">Registrieren</paper-button>
+    </div>
 
   </template>
 
@@ -41,10 +47,8 @@
       }
 
       forgot_password() {
-        //maybe route to forgot password page or directly ask for mail and apply logic
-        console.log("forgot_password");
 
-        // this._routeToPage('forgot-password');
+        this._routeToPage('reset-password');
       }
 
       register() {

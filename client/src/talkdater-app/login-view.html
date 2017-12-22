@@ -23,6 +23,7 @@
             
     </style>
 
+    <div class="notification"></div>
     <paper-input id="user_input" name="user" label="E-Mail"></paper-input>
     <paper-input id="password_input" name="password" label="Passwort" type="password"></paper-input>
     <paper-button id="login" on-click="login" raised elevation="1">Login</paper-button>
@@ -39,11 +40,24 @@
       static get is() { return 'login-view'; }
 
       login() {
+        let login_success = false;
         // to do: ajax or something else to do a real login
         // [login code...]
+        //
+        if ( login_success ) {
+          //login succesfull route to dashboard view
+          this._routeToPage('dashboard');
+        } else {
+          //login failed notification
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Login fehlgeschlagen";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.add('warning');
 
-        // after successful login route to dashboard view
-        this._routeToPage('dashboard');
+          //hide message after timeout
+          setTimeout(function() {
+            Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
+          }.bind(this), 5000);
+        }
       }
 
       forgot_password() {

@@ -10,7 +10,8 @@
 <link rel="lazy-import" href="reset-password-view.html">
 <link rel="lazy-import" href="dashboard-view.html">
 <link rel="lazy-import" href="register-view.html">
-<link rel="lazy-import" href="register-step2-view.html">
+<link rel="lazy-import" href="register-confirm.html">
+<link rel="lazy-import" href="register-intro-view.html">
 <link rel="lazy-import" href="meeting-setter-view.html">
 
 <dom-module id="talkdater-app">
@@ -42,6 +43,11 @@
         padding: 20px;
         box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
       }
+      #logo_image {
+        width: 70px;
+        height: 70px;
+        cursor: pointer;
+      }
       @media (max-width: 600px) {
         .content {
           padding: 0;
@@ -70,8 +76,8 @@
     <!-- header -->
     <app-header reveals>
       <app-toolbar>
-        <iron-image style="width:70px; height:70px;" sizing="contain" src="/data/images/isb.png" ></iron-image>
-        <div main-title>Talk Dater</div>
+        <iron-image id="logo_image" on-click="go_to_homescreen" sizing="contain" src="/data/images/isb.png" ></iron-image>
+          <div main-title>Talk Dater</div>
         <paper-icon-button icon="menu"></paper-icon-button>
         <!-- alternativ icon="more-vert" -->
         <paper-progress value="10" indeterminate bottom-item class="green"></paper-progress>
@@ -88,7 +94,8 @@
           <dashboard-view name="dashboard"></dashboard-view>
           <login-view name="login" on-changepage="changePage"></login-view>
           <register-view name="register" on-changepage="changePage"></register-view>
-          <register-step2-view name="register-step2" on-changepage="changePage"></register-step2-view>
+          <register-confirm-view name="register-confirm" on-changepage="changePage"></register-confirm-view>
+          <register-intro-view name="register-intro" on-changepage="changePage"></register-intro-view>
           <meeting-setter-view name="meeting-setter"></meeting-setter-view>
           <reset-password-view name="reset-password" on-changepage="changePage"></reset-password-view>
         </iron-pages>
@@ -172,6 +179,18 @@
       changePage(e) {
         this.page = e.detail.page;
       }
+
+      go_to_homescreen() {
+        // todo - check logged in
+        let logged_in = true;
+
+        if (logged_in) {
+          this.page = 'dashboard';
+        } else {
+          this.page = 'login';
+        }
+      }
+
     }
 
     window.customElements.define(TalkdaterApp.is, TalkdaterApp);

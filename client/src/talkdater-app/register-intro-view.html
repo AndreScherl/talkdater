@@ -1,0 +1,46 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="register-intro-view">
+  <template>
+    <style include="shared-styles">
+
+      #continue, #save_interest {
+        width: 120px;
+        float: right;
+      }
+
+      #submit {
+        float: right;
+      }
+            
+    </style>
+
+    <h1>Hallo Name,</h1>
+
+    <p>Willkommen bei Talkdater!</p>
+
+    <p>Gib an wann du Zeit hast und dann geht es eigentlich auch schon los. <br>Bei Übereinstimmungen kannst du einem möglichen Treffen ab- bzw. zusagen und einen genauen Zeitpunkt und Ort vereinbaren.<br>Angabe von Interessen können hilfreich sein bei der Auswahl der Paarungen sowie als Gesprächsaufhänger.</p>
+    <paper-button id='submit' raised elevation="1" name='submit'  on-click="submit" type='submit'>Okay</paper-button>
+
+    
+  </template>
+
+  <script>
+    class RegisterIntroView extends Polymer.Element {
+      static get is() { return 'register-intro-view'; }
+
+      submit() {
+        this._routeToPage('dashboard');
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
+    }
+
+    window.customElements.define(RegisterIntroView.is, RegisterIntroView);
+  </script>
+</dom-module>

@@ -14,7 +14,7 @@ I will automate these things soon, but for now you have to follow the steps belo
     * Root user email: your choice
     * Root user password: your choice
   * Start the aqua server again: `npm start`
-* (Terminal 1) Ctrl-C to shutdown the running docker container
+* (Terminal 1) Ctrl+C to shutdown the running docker container
 * (Terminal 1) `docker-compose up`
 
 That's it.

@@ -1,0 +1,21 @@
+{
+    "host": "http://localhost",
+    "port": 3000,
+    "siteName": "Talk Dater",
+    "ooth": {
+        "sessionSecret": "somesecret",
+        "sharedSecret": "somesharedsecret",
+        "path": "/auth"
+    },
+    "mongo": {
+        "url": "mongodb://localhost:27017",
+        "db": "talkdater",
+        "user": "admin",
+        "pwd": "nimda"
+    },
+    "mail": {
+        "user": "abc@def.gh",
+        "pwd": "supersecurepassword",
+        "from": "abc@def.gh"
+    }  
+}

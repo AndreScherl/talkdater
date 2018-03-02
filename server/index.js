@@ -4,10 +4,13 @@ const session = require('express-session')
 const {promisify} = require('util')
 const Ooth = require('ooth')
 const oothLocal = require('ooth-local')
+const oothLocalTalkdater = require('./ooth-local-talkdater')
 const OothMongo = require('ooth-mongo')
 const config = require('config')
 const mail = require('./mail')
 const emailer = require('ooth-local-emailer')
+
+const DEFAULT_LANGUAGE = 'de'
 
 const start = async () => {
     try {
@@ -34,12 +37,18 @@ const start = async () => {
         })
         const oothMongo = new OothMongo(db, ObjectId)
         await ooth.start(app, oothMongo)
-        ooth.use('local', oothLocal(emailer({
+        const url = config.get("host")+":"+config.get("port")
+        ooth.use('local', oothLocalTalkdater(oothLocal(emailer({
             from: config.get("mail.from"),
             siteName: config.get("siteName"),
-            url: config.get("host")+":"+config.get("port"),
-            sendMail: mail()
-        })))
+            url: url,
+            sendMail: mail(),
+            //translations: {de: require('./i18n/de.json')},
+            urls: {
+                verifyEmail: url + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
+                resetPassword: url + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
+            }
+        }))))
 
         app.get('/', (req, res) => res.sendFile(`${__dirname}/index.html`))
 

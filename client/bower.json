@@ -10,6 +10,17 @@
     "paper-input": "PolymerElements/paper-input#^2.1.1",
     "paper-button": "PolymerElements/paper-button#^2.0.0",
     "paper-card": "PolymerElements/paper-card#^2.1.0",
-    "tags-input": "jifalops/tags-input#^1.1.0"
+    "iron-collapse": "PolymerElements/iron-collapse#^2.2.0",
+    "paper-radio-group": "PolymerElements/paper-radio-group#^2.1.0",
+    "iron-autogrow-textarea": "PolymerElements/iron-autogrow-textarea#^2.2.0",
+    "paper-menu-button": "PolymerElements/paper-menu-button#^2.1.0",
+    "web-animations-js": "web-animations/web-animations-js#^2.3.1",
+    "paper-autocomplete": "ellipticaljs/paper-autocomplete#^3.6.0",
+    "paper-material": "PolymerElements/paper-material#^2.1.0",
+    "iron-selector": "PolymerElements/iron-selector#^2.1.0",
+    "iron-ajax": "PolymerElements/iron-ajax#^2.1.2",
+    "paper-listbox": "PolymerElements/paper-listbox#^2.0.0",
+    "paper-chip": "Collaborne/paper-chip#^2.0.4"
   }
 }
+

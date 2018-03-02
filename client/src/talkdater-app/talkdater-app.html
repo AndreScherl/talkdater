@@ -5,6 +5,11 @@
 <link rel="import" href="../../bower_components/app-route/app-route.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../../bower_components/iron-image/iron-image.html">
+<link rel="import" href="../../bower_components/paper-menu-button/paper-menu-button.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/neon-animation/web-animations.html">
 
 <link rel="lazy-import" href="login-view.html">
 <link rel="lazy-import" href="reset-password-view.html">
@@ -12,7 +17,7 @@
 <link rel="lazy-import" href="register-view.html">
 <link rel="lazy-import" href="register-confirm.html">
 <link rel="lazy-import" href="register-intro-view.html">
-<link rel="lazy-import" href="meeting-setter-view.html">
+<link rel="lazy-import" href="settings-view.html">
 
 <dom-module id="talkdater-app">
   <template>
@@ -38,7 +43,7 @@
       .card {
         background-color: white;
         max-width: 720px;
-        height: 500px;
+        min-height: 500px;
         margin: 16px auto;
         padding: 20px;
         box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.37);
@@ -47,6 +52,8 @@
         width: 70px;
         height: 70px;
         cursor: pointer;
+        padding: 15px;
+        margin-top: 9px;
       }
       @media (max-width: 600px) {
         .content {
@@ -61,6 +68,19 @@
     <!--            -->
     <!-- HTML BEGIN -->
     <!--            -->
+
+    <!-- load config -->
+    <!-- todo propagate to elements -->
+    <iron-ajax
+      id="AjaxPostConf"
+      url="/data/config.json"
+      method="POST"
+      content-type="application/x-www-form-urlencoded"
+      handle-as="json"
+      on-response="_handleAjaxPostResponse"
+      on-error="_handleAjaxPostError"
+      last-response="{{config}}"
+    ></iron-ajax>
 
     <!-- app-location binds to the app's URL -->
     <app-location route="{{route}}"></app-location>
@@ -78,8 +98,15 @@
       <app-toolbar>
         <iron-image id="logo_image" on-click="go_to_homescreen" sizing="contain" src="/data/images/isb.png" ></iron-image>
           <div main-title>Talk Dater</div>
-        <paper-icon-button icon="menu"></paper-icon-button>
-        <!-- alternativ icon="more-vert" -->
+          <paper-menu-button horizontal-align="right">
+            <paper-icon-button icon="menu" slot="dropdown-trigger" alt="menu"></paper-icon-button>
+            <paper-listbox slot="dropdown-content">
+              <paper-item on-click="go_to_homescreen">Startseite</paper-item>
+              <paper-item on-click="go_to_settings">Einstellungen</paper-item>
+              <paper-item on-click="go_to_logout">Logout</paper-item>
+            </paper-listbox>
+          </paper-menu-button>
+                  <!-- alternativ icon="more-vert" -->
         <paper-progress value="10" indeterminate bottom-item class="green"></paper-progress>
       </app-toolbar>
     </app-header>
@@ -91,13 +118,14 @@
             selected="[[page]]"
             attr-for-selected="name"
             role="main">
-          <dashboard-view name="dashboard"></dashboard-view>
+          <dashboard-view name="dashboard" config={{config}} ></dashboard-view>
           <login-view name="login" on-changepage="changePage"></login-view>
           <register-view name="register" on-changepage="changePage"></register-view>
           <register-confirm-view name="register-confirm" on-changepage="changePage"></register-confirm-view>
           <register-intro-view name="register-intro" on-changepage="changePage"></register-intro-view>
           <meeting-setter-view name="meeting-setter"></meeting-setter-view>
           <reset-password-view name="reset-password" on-changepage="changePage"></reset-password-view>
+          <settings-view name="settings" on-changepage="changePage"></settings-view>
         </iron-pages>
       </div>
     </div>
@@ -148,6 +176,7 @@
         // Get root pattern for app-route, for more info about `rootPath` see:
         // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
         this.rootPattern = (new URL(this.rootPath)).pathname;
+        console.log(this.config);
       }
 
       _routePageChanged(page) {
@@ -156,10 +185,11 @@
         if (page === undefined) {
           return;
         }
-
         // If no page was found in the route data, page will be an empty string.
         // Deault to 'login' in that case.
-        this.page = page || 'login';
+        //for develpment to dashboard
+        this.page = page || 'dashboard';        
+        // this.page = page || 'login';        
       }
 
       _pageChanged(page) {
@@ -189,6 +219,25 @@
         } else {
           this.page = 'login';
         }
+      }
+      go_to_settings() {
+        // todo - check logged in
+        let logged_in = true;
+
+        if (logged_in) {
+          this.page = 'settings';
+        } else {
+          this.page = 'login';
+        }
+      }
+      go_to_logout() {
+
+        // todo - check logged in
+
+        //todo - log out
+        
+        this.page = 'login';
+      
       }
 
     }

@@ -1,0 +1,117 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/polymer/lib/mixins/gesture-event-listeners.html">
+<link rel="import" href="../../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-chip/paper-chip.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<!-- <link rel="import" href="../../bower_components/paper-styles/default-theme.html"> -->
+<link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
+
+
+<!-- NOTE -->
+<!-- originally this is chadweimer/paper-tags-input changed for tags shown below input -->
+<!-- then instead of paper-input ellipticaljs/paper-autocomplete was added -->
+
+
+<dom-module id="paper-autocomplete-tags">
+    <template>
+        <style include="shared-styles">
+            :host {
+                display: block;
+            }
+            :host[hidden] {
+                display: none !important;
+            }
+            input {
+                text-transform: lowercase;
+                height: 36px;
+                width: auto !important;
+                padding-left: 0.5em;
+            }
+            paper-chip {
+                margin: 2px;
+                padding-right: 6px;
+                cursor: pointer;
+            }
+            iron-icon {
+                --iron-icon-height: 20px;
+                --iron-icon-width: 20px;
+                color: var(--disabled-text-color);
+            }
+        </style>
+
+        <!-- load topics -->
+        <iron-ajax url="/data/topics.json" last-response="{{topics}}" auto></iron-ajax>
+
+        <!-- autocomplete added -->
+        <paper-autocomplete id="autocomplete" label="Themen" placeholder="Thema hinzufügen"  source="{{topics}}" on-keyup="_onInputKeyup"></paper-autocomplete>    
+
+        <!-- tag section moved below-->
+        <div slot="prefix">
+            <template is="dom-repeat" items="[[tags]]">
+                <paper-chip selectable>[[item]]<iron-icon icon="icons:cancel" on-tap="_onTagRemoveTapped"></iron-icon></paper-chip>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        /**
+        * `paper-autocomplete-tags`
+        * Material Design input control for a collection of tags
+        *
+        * @customElement
+        * @polymer
+        * @demo demo/index.html
+        */
+        class PaperAutocompleteTags extends Polymer.GestureEventListeners(Polymer.Element) {
+            static get is() { return 'paper-autocomplete-tags'; }
+            static get properties() {
+                return {
+                    tags: {
+                        type: Array,
+                        notify: true,
+                        value: function() { return []; }
+                    }
+                };
+            }
+
+            add(tag) {
+                if (this.tags === null) {
+                    this.tags = [];
+                }
+                
+                var trimmedTag = tag.replace(/^\s+/, '').replace(/\s+$/, '');
+                if (trimmedTag !== '') {
+                    var tagIndex = this.tags.indexOf(trimmedTag);
+                    if (tagIndex === -1) {
+                        this.push('tags', trimmedTag);
+                    }
+                }
+            }
+            remove(tag) {
+                if (this.tags === null) {
+                    return;
+                }
+                var tagIndex = this.tags.indexOf(tag);
+                if (tagIndex > -1) {
+                    this.splice('tags', tagIndex, 1);
+                }
+            }
+
+            _onTagRemoveTapped(e) {
+                e.preventDefault();
+
+                this.remove(e.model.item);
+            }
+            _onInputKeyup(e) {
+                // console.log( this.$.autocomplete.shadowRoot.querySelector("#autocompleteInput").value);
+                if (e.keyCode === 13) {
+                    this.add(this.$.autocomplete.shadowRoot.querySelector("#autocompleteInput").value.toLowerCase());
+                    this.$.autocomplete.shadowRoot.querySelector("#autocompleteInput").value = '';
+                }
+            }
+        }
+
+        window.customElements.define(PaperAutocompleteTags.is, PaperAutocompleteTags);
+    </script>
+</dom-module>

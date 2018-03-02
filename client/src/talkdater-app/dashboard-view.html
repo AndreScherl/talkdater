@@ -1,22 +1,32 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="dater-element.html">
-<link rel="import" href="interests-element.html">
+<link rel="import" href="notification-element.html">
+<link rel="import" href="days-element.html">
+<link rel="import" href="paper-autocomplete-tags.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="dashboard-view">
   <template>
     <style include="shared-styles">
-    
+
     </style>
 
-    <h1>Hallo Vorname Nachname</h1>
-    <dater-element></dater-element>
-    <interests-element></interests-element>
+    <h1>Hallo [[user.name]]</h1>
+
+    <notification-element> </notification-element>
+
+    <!-- own topics -->
+    <paper-autocomplete-tags></paper-autocomplete-tags>
+
+    <days-element style="margin-top: 20px;"></days-element>
   </template>
 
   <script>
     class DashboardView extends Polymer.Element {
       static get is() { return 'dashboard-view'; }
+      constructor() {
+        super();
+        this.user = {name: 'Kai'};
+      }
     }
 
     window.customElements.define(DashboardView.is, DashboardView);

@@ -43,7 +43,6 @@ module.exports = function (oothLocal, onVerify) {
 		registerGetMethod('verify', function (req, res) {
             
             const { userId, token } = req.query;
-            console.log(req.query);
 
             if (!userId) {
                 throw new Error('userId required.');

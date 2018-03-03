@@ -38,7 +38,7 @@ const start = async () => {
         const oothMongo = new OothMongo(db, ObjectId)
         await ooth.start(app, oothMongo)
         const url = config.get("host")+":"+config.get("port")
-        ooth.use('local', oothLocalTalkdater(oothLocal(emailer({
+        const mailOnEvents = emailer({
             from: config.get("mail.from"),
             siteName: config.get("siteName"),
             url: url,
@@ -48,7 +48,8 @@ const start = async () => {
                 verifyEmail: url + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
                 resetPassword: url + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
             }
-        }))))
+        })
+        ooth.use('local', oothLocalTalkdater(oothLocal(mailOnEvents), mailOnEvents.onVerify))
 
         app.get('/', (req, res) => res.sendFile(`${__dirname}/index.html`))
 

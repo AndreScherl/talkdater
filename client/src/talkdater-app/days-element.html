@@ -1,0 +1,65 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../../bower_components/paper-material/paper-material.html">
+
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="days-element">
+  <template>
+    <style include="shared-styles">
+
+      #day_picker {
+        display: inline-block;
+        width: 100%;
+
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        cursor: default;
+      }
+      #day_picker > paper-material {
+        width: 12%;
+        padding: 15px 4%;
+        color: var(--primary-text-color);
+        text-decoration: none;
+        float: left;
+      }
+      .iron-selected {
+        background: #93D8AF;
+      }
+      
+    </style>
+
+  <!-- load days -->
+  <iron-ajax url="/data/days.json" last-response="{{days}}" auto></iron-ajax>
+
+
+  <div>Tage am ISB</div>
+<!-- todo -> Abkürzungen bei kleineren Bildschirmbreiten verwenden     -->
+  <iron-selector attr-for-selected="name" selected-values="{{days}}" multi="true" id="day_picker" on-selected-items-changed="daysChanged">
+    <paper-material elevation="1" name="mon">Montag</paper-material>
+    <paper-material elevation="1" name="tue">Dienstag</paper-material>
+    <paper-material elevation="1" name="wed">Mittwoch</paper-material>
+    <paper-material elevation="1" name="thu">Donnerstag</paper-material>
+    <paper-material elevation="1" name="fri">Freitag</paper-material>
+  </iron-selector>
+
+  </template>
+
+  <script>
+    class DaysElement extends Polymer.Element {
+      static get is() { return 'days-element'; }
+      daysChanged() {
+        //currently selected dasy ["mon", "tue"]
+        let selected_days = this.days;
+
+        //send ajax request to db
+        // this.$.AjaxPost.body = ["mon", "tue"];
+        // this.$.AjaxPost.generateRequest();
+      }
+    }
+
+    window.customElements.define(DaysElement.is, DaysElement);
+  </script>
+</dom-module>

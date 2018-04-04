@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="register-confirm-view">
+  <template>
+    <style include="shared-styles">
+
+      #submit {
+        float: right;
+        width: 120px;
+      }
+
+      .links paper-button {
+        color: grey;
+        margin-top: 10px;
+        font-size: 70%;
+      }
+
+      #reg_code {
+        width: 150px;
+        margin: 0 auto;
+        text-align: center;
+        padding-bottom: 12px;
+      }
+
+    </style>
+
+    <h1>E-Mail bestätigen</h1>
+    <p>Eine E-Mail mit einem Bestätig wurde versand an XXX.</p>
+    <p>Um fortzufahren geben Sie nun den dort enthaltenen Code ein.</p>
+    <div>
+      <paper-input id="reg_code" name='code' label='Code' type='string'></paper-input>
+      <div class="notification"></div>
+    </div>
+    <paper-button id='submit' raised elevation="1" name='submit'  on-click="submit" type='submit'>Bestätigen</paper-button>
+    <!-- <paper-button raised elevation="1" name='cancel' on-click="cancel" type='reset'>Abbrechen</paper-button> -->
+
+    <div class="links">
+      <paper-button on-click="reset_registration">Registrierung zurücksetzen</paper-button>
+    </div>
+  </template>
+
+  <script>
+    class RegisterConfirmView extends Polymer.Element {
+      static get is() { return 'register-confirm-view'; }
+
+      code_check() {
+        let valid = true;
+
+        return valid;
+      }
+
+      reset_registration() {
+        //todo
+        //delete from registry table
+
+        this._routeToPage('login');
+      }
+
+      submit() {
+        //check code
+        let validated = this.code_check();
+
+        if (validated) {
+          //Validation failed notification
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Prüfung erfolgreich";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.add('success');
+
+          //hide message after timeout
+          setTimeout(function() {
+            Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
+          }.bind(this), 1300);          
+
+          //go to next page
+          setTimeout(function() {
+            this._routeToPage('register-intro');
+          }.bind(this), 1600);          
+        } else {
+          //Validation failed notification
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Prüfung fehlgeschlagen";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.add('warning');
+
+          //hide message after timeout
+          setTimeout(function() {
+            Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
+          }.bind(this), 5000);
+        }
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
+    }
+
+    window.customElements.define(RegisterConfirmView.is, RegisterConfirmView);
+  </script>
+</dom-module>

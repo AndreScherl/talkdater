@@ -8,7 +8,7 @@ const oothLocalTalkdater = require('./ooth-local-talkdater')
 const OothMongo = require('ooth-mongo')
 const config = require('config')
 const mail = require('./mail')
-const emailer = require('ooth-local-emailer')
+const emailer = require('./ooth-local-emailer-talkdater')
 
 const DEFAULT_LANGUAGE = 'de'
 
@@ -43,11 +43,15 @@ const start = async () => {
             siteName: config.get("siteName"),
             url: url,
             sendMail: mail(),
-            //translations: {de: require('./i18n/de.json')},
+            translations: {
+                de: require('./i18n/de.json'),
+                en: require('./i18n/en.json')
+            },
             urls: {
                 verifyEmail: url + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
                 resetPassword: url + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
-            }
+            },
+            language: 'de'
         })
         ooth.use('local', oothLocalTalkdater(oothLocal(mailOnEvents), mailOnEvents.onVerify))
 

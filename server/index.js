@@ -14,6 +14,7 @@ const DEFAULT_LANGUAGE = 'de'
 
 const start = async () => {
     try {
+        // connect to mongo db
         const mongo_cfg = config.get("mongo")
         const client = await MongoClient.connect(mongo_cfg.url + '/' + mongo_cfg.db, {
             auth: {
@@ -22,7 +23,8 @@ const start = async () => {
             },
         })
         const db = client.db(mongo_cfg.db)
-    
+        
+        // new express instance, including ooth session
         const app = express()
         app.use(session({
             name: 'api-session-id',
@@ -31,12 +33,17 @@ const start = async () => {
             saveUninitialized: true,
         }))
 
+        // new ooth instance - main instance for user authentication
         const ooth = new Ooth({
             sharedSecret: config.get("ooth.sharedSecret"),
             path: config.get("ooth.path"),
         })
+
+        // connect ooth to mongodb backend with own api, and start ooth.
         const oothMongo = new OothMongo(db, ObjectId)
         await ooth.start(app, oothMongo)
+
+        // settings for email interaction, including localization.
         const url = config.get("host")+":"+config.get("port")
         const mailOnEvents = emailer({
             from: config.get("mail.from"),
@@ -53,10 +60,14 @@ const start = async () => {
             },
             language: 'de'
         })
+
+        // add the local authentication method to ooth instance. Customized for TalkDater.
         ooth.use('local', oothLocalTalkdater(oothLocal(mailOnEvents), mailOnEvents.onVerify))
 
+        // define route for main entry of app.
         app.get('/', (req, res) => res.sendFile(`${__dirname}/index.html`))
 
+        // start listenting for requests.
         await promisify(app.listen)(config.get("port"))
         console.info(`Online at ${config.get("host")}:${config.get("port")}`)
     } catch (e) {

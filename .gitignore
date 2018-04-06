@@ -2,3 +2,4 @@
 */bower_components/
 server/config/*
 !server/config/default-dist.json
+*/node_modules/

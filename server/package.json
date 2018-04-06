@@ -15,6 +15,7 @@
     "express-session": "^1.15.6",
     "mongodb": "^3.0.1",
     "nodemailer": "^4.6.0",
+    "npm": "^5.8.0",
     "ooth": "^1.1.0",
     "ooth-local": "^1.1.0",
     "ooth-local-emailer": "^1.2.1",

@@ -33,6 +33,9 @@ const start = async () => {
             saveUninitialized: true,
         }))
 
+        // prevent x-powered-by attacks (see http://expressjs.com/en/advanced/best-practice-security.html#use-helmet)
+        app.disable('x-powered-by')
+
         // new ooth instance - main instance for user authentication
         const ooth = new Ooth({
             sharedSecret: config.get("ooth.sharedSecret"),

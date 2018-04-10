@@ -1,6 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<!-- <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html"> -->
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="register-view">
@@ -21,12 +23,20 @@
     </style>
 
     <h1>Registrieren</h1>
-    <paper-input name='Name' label='Name' type='string'></paper-input>
-    <paper-input name='email' label='E-Mail' type='email'></paper-input>
-    <paper-input name='password' label='Passwort' type='password'></paper-input>
-    <paper-input name='retyped_password' class="submit_margin" label='Passwort wiederholen' type='password'></paper-input>
-    <paper-button id='submit' raised elevation="1" name='submit'  on-click="submit" type='submit'>Registrieren</paper-button>
-    <!-- <paper-button raised elevation="1" name='cancel' on-click="cancel" type='reset'>Abbrechen</paper-button> -->
+
+    <iron-form id="register_form">
+      <form>
+        <paper-input name='Name' label='Name' type='string' required></paper-input>
+        <paper-input name='email' label='E-Mail' type='email' validator="email-validator" required></paper-input>
+        <paper-input name='password' label='Passwort' type='password' required></paper-input>
+        <paper-input name='retyped_password' class="submit_margin" label='Passwort wiederholen' type='password' required></paper-input>
+        <paper-button id='submit' raised elevation="1" name='submit'  on-click="_delayedSubmit" type='submit'>
+          <paper-spinner id="spinner" hidden></paper-spinner>
+          Registrieren
+        </paper-button>
+      </form>
+      <div class="output"></div>
+    </iron-form>    
 
     <div class="links">
       <paper-button on-click="to_login">Zum Login</paper-button>
@@ -34,30 +44,80 @@
   </template>
 
   <script>
+
     class RegisterView extends Polymer.Element {
       static get is() { return 'register-view'; }
+
+      ready() {
+        super.ready();
+
+        //initiate form
+        let regForm = this.$.register_form;
+        let regFormSubmit = this.$.submit;
+        // let spinner = this.$.spinner;
+
+        regForm.addEventListener('iron-form-submit', function(event) {
+          this.querySelector('.output').innerHTML = JSON.stringify(event.detail);
+          // spinner.active = false;
+          // spinner.hidden = true;          
+          regFormSubmit.disabled = false;
+        });
+        regForm.addEventListener('change', function(event) {
+          //enable if all checks ok and tried to submit before
+          if (regFormSubmit.disabled == true && regForm.validate()) {
+            
+            //todo
+            //add validator if passwords are the same
+
+            regFormSubmit.disabled = false;
+          }
+        });     
+      }
 
       to_login() {
         this._routeToPage('login');
       }
 
+
+
       //todo
       is_register_mail_send() {
-        let send = false;
+
+
+
 
         return send;
       }
 
-      submit() {
-        //save for possible reuse
+      // submit() {
 
+      //   //userdata
+      //   let requestBody = [this.email, this.password]
+      //   this.$.loginRequest.body = requestBody;
 
-        //check email 
+      //   //trigger request
+      //   let response = this.$.loginRequest.generateRequest();
+      //   //check email 
 
-        //check pwds same value
+      //   //check pwds same value
 
-        this._routeToPage('register-confirm');
-      }
+      //   this._routeToPage('register-confirm');
+      // }
+
+      _delayedSubmit(event) {
+          let regForm = this.$.register_form;
+          let regFormSubmit = this.$.submit;
+          // let spinner = this.$.spinner;
+
+          // spinner.active = true;
+          // spinner.hidden = false;
+          regFormSubmit.disabled = true;
+          // Simulate a slow server response.
+          setTimeout(function() {
+            regForm.submit()
+            this._routeToPage('register-confirm');
+          }.bind(this), 1000);
+        }
 
       _routeToPage(page) {
         this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));

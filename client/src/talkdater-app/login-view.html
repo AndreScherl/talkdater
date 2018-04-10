@@ -20,10 +20,22 @@
             
     </style>
 
+    <iron-ajax
+      id="loginRequest"
+      method="get"
+      url="/data/login"
+      handle-as="json"
+      on-response="loginResponse"
+     ></iron-ajax>
+     <!-- on-error="handleError" -->
+     <!-- content-type="application/json" -->
+     <!-- verbose=true -->
+
+
     <h1>Login</h1>
     <div class="notification"></div>
-    <paper-input id="user_input" name="user" label="E-Mail"></paper-input>
-    <paper-input id="password_input" name="password" class="submit_margin" label="Passwort" type="password"></paper-input>
+    <paper-input id="user_input" name="user" value="{{email}}" label="E-Mail"></paper-input>
+    <paper-input id="password_input" name="password" value={{password}} class="submit_margin" label="Passwort" type="password"></paper-input>
     <paper-button id="login" on-click="login" raised elevation="1">Login</paper-button>
     
     <div class="links">
@@ -38,11 +50,21 @@
       static get is() { return 'login-view'; }
 
       login() {
-        let login_success = false;
-        // to do: ajax or something else to do a real login
-        // [login code...]
-        //
-        if ( login_success ) {
+        //userdata
+        let requestBody = [this.email, this.password]
+        this.$.loginRequest.body = requestBody;
+
+        //trigger request
+        let response = this.$.loginRequest.generateRequest();
+      }
+
+      loginResponse(data) {
+        let response = data.detail.response;
+        console.log(response);
+        console.log(response[0]);
+
+        //first element of response aŕray could be true or false
+        if ( response[0] == "true" ) {
           //login succesfull route to dashboard view
           this._routeToPage('dashboard');
         } else {
@@ -55,11 +77,14 @@
           setTimeout(function() {
             Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
           }.bind(this), 5000);
-        }
+        }        
+      }
+
+      handleError(error) {
+        alert(error);
       }
 
       forgot_password() {
-
         this._routeToPage('reset-password');
       }
 

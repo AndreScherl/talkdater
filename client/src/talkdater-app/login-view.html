@@ -35,7 +35,7 @@
     <h1>Login</h1>
     <div class="notification"></div>
     <paper-input id="user_input" name="user" value="{{email}}" label="E-Mail"></paper-input>
-    <paper-input id="password_input" name="password" value={{password}} class="submit_margin" label="Passwort" type="password"></paper-input>
+    <paper-input id="password_input" name="password" value="{{password}}" class="submit_margin" label="Passwort" type="password"></paper-input>
     <paper-button id="login" on-click="login" raised elevation="1">Login</paper-button>
     
     <div class="links">
@@ -52,10 +52,11 @@
       login() {
         //userdata
         let requestBody = [this.email, this.password]
+        // console.log(requestBody);
         this.$.loginRequest.body = requestBody;
 
         //trigger request
-        let response = this.$.loginRequest.generateRequest();
+        this.$.loginRequest.generateRequest();
       }
 
       loginResponse(data) {

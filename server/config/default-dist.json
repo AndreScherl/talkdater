@@ -14,8 +14,19 @@
         "pwd": "nimda"
     },
     "mail": {
-        "user": "abc@def.gh",
-        "pwd": "supersecurepassword",
-        "from": "abc@def.gh"
+        "nodemailer": {
+            "host": "smtp.googlemail.com", // smtp server
+            "port": 465, // smtp server port
+            "secure": true, // true for 465, false for other ports
+            "auth": {
+                "user": "abc@def.gh", // user account
+                "pass": "supersecurepassword", // password of user    
+            }       
+        },
+        "from": "abc@def.gh", // sender email address
+        "urls": {
+            "verifyEmail": "/local/verify?token={verification-token}&userId={user-id}",
+            "resetPassword": "/reset-password?token={password-reset-token}&userId={user-id}"
+        }
     }  
 }

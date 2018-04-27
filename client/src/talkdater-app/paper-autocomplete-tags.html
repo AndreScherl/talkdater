@@ -6,7 +6,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <!-- <link rel="import" href="../../bower_components/paper-styles/default-theme.html"> -->
 <link rel="import" href="../../bower_components/paper-autocomplete/paper-autocomplete.html">
-
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <!-- NOTE -->
 <!-- originally this is chadweimer/paper-tags-input changed for tags shown below input -->
@@ -40,11 +40,18 @@
             }
         </style>
 
-        <!-- load topics -->
-        <iron-ajax url="/data/topics.json" last-response="{{topics}}" auto></iron-ajax>
+        <!-- load tags -->
+        <iron-ajax url="/data/tags"
+        id="tagsRequest"
+        url="/data/tags"
+        params='{"user":123123, "status":"get_tags"}'
+        handle-as="json"
+        on-response="tagsResponse"
+        verbose=true
+         ></iron-ajax>
 
         <!-- autocomplete added -->
-        <paper-autocomplete id="autocomplete" label="Themen" placeholder="Thema hinzufügen"  source="{{topics}}" on-keyup="_onInputKeyup"></paper-autocomplete>    
+        <paper-autocomplete id="autocomplete" label="Themen" placeholder="Thema hinzufügen"  source="[[tags]]" on-keyup="_onInputKeyup"></paper-autocomplete>    
 
         <!-- tag section moved below-->
         <div slot="prefix">
@@ -75,6 +82,11 @@
                 };
             }
 
+            ready() {
+                super.ready();
+                this.$.tagsRequest.generateRequest();
+            }            
+
             add(tag) {
                 if (this.tags === null) {
                     this.tags = [];
@@ -85,6 +97,12 @@
                     var tagIndex = this.tags.indexOf(trimmedTag);
                     if (tagIndex === -1) {
                         this.push('tags', trimmedTag);
+
+                        //send ajax request to db
+                        //todo add para for creating a tag
+                        console.log("add tag: " + trimmedTag);
+                        // this.$.tagsRequest.body = trimmedTag;
+                        // this.$.tagsRequest.generateRequest();                        
                     }
                 }
             }
@@ -95,7 +113,18 @@
                 var tagIndex = this.tags.indexOf(tag);
                 if (tagIndex > -1) {
                     this.splice('tags', tagIndex, 1);
+
+                    //send ajax request to db
+                    //todo add para for deleting a tag
+                    console.log("del tag: " + tag);
+                    // this.$.tagsRequest.body = tag;
+                    // this.$.tagsRequest.generateRequest();                             
                 }
+            }
+
+            tagsResponse(data) {
+                this.tags = data.detail.response;
+                console.log("this " + this.tags);
             }
 
             _onTagRemoveTapped(e) {

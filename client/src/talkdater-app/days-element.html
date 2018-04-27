@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="import" href="shared-styles.html">
 
@@ -32,12 +33,19 @@
     </style>
 
   <!-- load days -->
-  <iron-ajax url="/data/days.json" last-response="{{days}}" auto></iron-ajax>
+  <iron-ajax
+    id="daysRequest"
+    url="/data/days"
+    params='{"user":123123, "status":"get_days"}'
+    handle-as="json"
+    on-response="daysResponse"
+     ></iron-ajax>
+    <!-- verbose=true -->
 
 
   <div>Tage am ISB</div>
 <!-- todo -> Abkürzungen bei kleineren Bildschirmbreiten verwenden     -->
-  <iron-selector attr-for-selected="name" selected-values="{{days}}" multi="true" id="day_picker" on-selected-items-changed="daysChanged">
+  <iron-selector attr-for-selected="name" selected-values="{{days}}" multi="true" id="day_picker" on-click="daysChanged">
     <paper-material elevation="1" name="mon">Montag</paper-material>
     <paper-material elevation="1" name="tue">Dienstag</paper-material>
     <paper-material elevation="1" name="wed">Mittwoch</paper-material>
@@ -49,15 +57,30 @@
 
   <script>
     class DaysElement extends Polymer.Element {
-      static get is() { return 'days-element'; }
-      daysChanged() {
-        //currently selected dasy ["mon", "tue"]
-        let selected_days = this.days;
 
-        //send ajax request to db
-        // this.$.AjaxPost.body = ["mon", "tue"];
-        // this.$.AjaxPost.generateRequest();
+      static get is() { return 'days-element'; }
+
+      ready() {
+        super.ready();
+        this.$.daysRequest.generateRequest();
       }
+
+      daysResponse(data) {
+        this.days = data.detail.response;
+      }
+
+      daysChanged() {
+        //timeout function to let days be changed, works even with 0 delay
+        setTimeout(function() {
+          let selected_days = this.days;
+          console.log("days changed" + selected_days);
+        //send ajax request to db
+        // this.$.daysRequest.body = selected_days;
+        // this.$.daysRequest.generateRequest();
+        }.bind(this), 5);
+
+      }
+      
     }
 
     window.customElements.define(DaysElement.is, DaysElement);

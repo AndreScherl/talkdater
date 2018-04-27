@@ -10,6 +10,7 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/neon-animation/web-animations.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <link rel="lazy-import" href="login-view.html">
 <link rel="lazy-import" href="reset-password-view.html">
@@ -196,7 +197,7 @@
         // If no page was found in the route data, page will be an empty string.
         // Deault to 'login' in that case.
         //for develpment to dashboard
-        this.page = page || 'dashboard';        
+        this.page = page || 'register';        
         // this.page = page || 'login';        
       }
 

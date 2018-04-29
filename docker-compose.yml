@@ -1,0 +1,52 @@
+version: '3'
+
+services:
+  mongodb:
+    container_name: talkdater_mongo
+    image: "mongo"
+    ports:
+      - "27017:27017"
+    networks:
+      - dockernet
+    # environment:
+    #   - MONGO_INITDB_ROOT_USERNAME=admin
+    #   - MONGO_INITDB_ROOT_PASSWORD=nimda
+    #   - MONGO_INITDB_DATABASE=talkdater
+
+  api:
+    container_name: talkdater_api
+    build: ./api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    networks:
+      - dockernet
+    environment:
+      - NODE_ENV=development
+
+  client:
+    container_name: talkdater_client
+    build: ./client
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
+      - api
+    networks:
+      - dockernet
+
+  reverseproxy:
+    container_name: talkdater_proxy
+    build: ./reverseproxy
+    ports:
+      - 8080:8080
+    depends_on:
+      - api
+      - client
+    restart: always
+    networks:
+      - dockernet
+
+networks:
+  dockernet:

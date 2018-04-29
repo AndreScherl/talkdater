@@ -1,5 +1,5 @@
 .DS_Store
 */bower_components/
-server/config/*
-!server/config/default-dist.json
+api/config/*
+!api/config/default-dist.json
 */node_modules/

@@ -1,0 +1,159 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-selector/iron-multi-selectable.html">
+<link rel="import" href="../../bower_components/iron-autogrow-textarea/iron-autogrow-textarea.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="notification-element">
+  <template>
+    <style include="shared-styles">
+
+      paper-card {
+        width: 100%;
+        padding: 10px;
+      }
+      paper-button {
+        text-transform: none;
+      }
+
+      iron-autogrow-textarea {
+        width: 99%;
+      }
+      .dday {
+        display: inline-block;
+        padding-top: 11px;
+        width: 90px;
+      }
+      .time_picker > paper-button {
+        width: 4%;
+        padding: 10px 1%;
+        margin: 2px;
+        color: var(--primary-text-color);
+        text-decoration: none;
+        /*float: left;*/
+      }
+      .asdftime_picker > div {
+        width: 90px;
+        padding: 10px 0px;
+      }
+      .iron-selected {
+        background: #93D8AF;
+      }
+
+      .container {
+         display: flex;
+         flex-wrap: wrap;
+         align-items: baseline;
+      }
+
+    </style>
+
+    <!-- No Dates -->
+    <template is="dom-if" if="{{!dates_made}}">
+        Aktuell keine Mittagessendates
+    </template>
+
+    <template is="dom-if" if="{{dates_made}}">
+      <paper-card>
+        <p>
+          Es wurde eine Übereinstimmung bei den Themen? soundso erzielt, folgende Tage wären möglich:
+          Wählen Sie bitte für Sie passende Zeiten aus.
+        </p>
+
+        <!-- todo - evtl noch mit farben eintragen wo von den partnern was eingetragen wurde -->
+
+        <dom-repeat items="[[dates]]">
+          <template>
+            <div class="container">
+              <div class="dday">{{item.day}}</div>
+              <div>
+                <iron-selector attr-for-selected="name" selected-values="[[dates_own]]" multi="" class="time_picker" on-click="ironItemsChanged">
+                  <paper-button name="[[item.slot1]]">11:00</paper-button>
+                  <paper-button name="[[item.slot2]]">11:30</paper-button>
+                  <paper-button name="[[item.slot3]]">12:00</paper-button>
+                  <paper-button name="[[item.slot4]]">12:30</paper-button>
+                  <paper-button name="[[item.slot5]]">13:00</paper-button>
+                </iron-selector>
+              </div>
+            </div>
+          </template>
+        </dom-repeat>
+
+        <!-- Wenn Übereinstimmung-->
+        <div class="final">
+          <p>Es wurde noch keine Übereinstimmung erreicht</p>
+          --
+          <p>Mahlzeit! Das blind Date findet statt den xx.xx. am Hier um dann.</p>
+          <p>Woran erkennt dich dein/deine Gegenübers ?
+          <iron-autogrow-textarea></iron-autogrow-textarea>
+          <paper-button style="float: right;" raised="">Zustimmen und absenden</paper-button>
+          <paper-button style="float: right;" raised="">Leider absagen</paper-button>
+          </p>
+        </div>
+
+      </paper-card>
+    </template>
+
+    <div style="padding: 10px;"></div>
+
+    <iron-ajax id="AjaxPost" url="/api/saveDates" method="POST" content-type="application/x-www-form-urlencoded" handle-as="json" on-response="_handleAjaxPostResponse" on-error="_handleAjaxPostError"></iron-ajax>
+
+  </template>
+
+  <script>
+    class NotificationElement extends Polymer.Element {
+      static get is() { return 'notification-element'; }
+      static get properties() {
+        return {
+          dates: {
+            value() {
+              //get dates
+              let dates = [
+                {"day": "Mo, 13.01", "slot1": "180113_1", "slot2": "180113_2", "slot3": "180113_3", "slot4": "180113_4", "slot5": "180113_5"},
+                {"day": "Di, 14.01", "slot1": "180114_1", "slot2": "180114_2", "slot3": "180114_3", "slot4": "180114_4", "slot5": "180114_5"}
+              ];
+
+              //dev -  override
+              dates = [];
+
+              //check if empty and write to dates_made
+              this.dates_made = (dates.length > 0 ? true : false);
+
+              return dates;
+            }
+          },
+          dates_own: {
+            value() {
+              let dates_own = ["180113_2", "180114_4"];
+              return dates_own;
+            }
+          }
+        }
+      }
+      ironItemsChanged(e) {
+        //name/value of selected item
+        let selected = e.target.name;
+
+        //todo - is selected or deselected?
+
+        //send ajax request to db
+        // this.$.AjaxPost.body = { "user": "user_1", "selected": selected };
+        // this.$.AjaxPost.generateRequest();
+      }
+
+      _handleAjaxPostError(event) {
+        //todo - undo selection
+        console.log(event.detail.request);
+      }
+
+      finalize() {
+        //check if there is some agreement
+        let agreement = true;
+
+      }
+    }
+    window.customElements.define(NotificationElement.is, NotificationElement);
+  </script>
+</dom-module>

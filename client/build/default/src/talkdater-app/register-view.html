@@ -1,0 +1,134 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-form/iron-form.html">
+<!-- <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html"> -->
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="register-view">
+  <template>
+    <style include="shared-styles">
+
+      #submit {
+        float: right;
+        width: 120px;
+      }
+
+      .links paper-button {
+        color: grey;
+        margin-top: 10px;
+        font-size: 70%;
+      }
+
+    </style>
+
+  <iron-ajax id="registerRequest" method="get" url="/data/login" handle-as="json" on-response="registerResponse"></iron-ajax>
+    <!-- verbose=true -->    
+
+    <h1>Registrieren</h1>
+
+    <iron-form id="register_form">
+      <form>
+        <paper-input name="Name" label="Name" type="string" value="{{name}}" required=""></paper-input>
+        <paper-input name="email" label="E-Mail" type="email" value="{{email}}" validator="email-validator" required=""></paper-input>
+        <paper-input name="email" label="E-Mail wiederholen" type="email" pattern="[[email]]" required=""></paper-input>
+        <paper-input name="password" label="Passwort wählen" type="password" value="{{pw}}" required=""></paper-input>
+        <paper-input id="pw_retype" name="retyped_password" class="submit_margin" value="{{pw_retype}}" label="Passwort wiederholen" type="password" pattern="[[pw]]" required=""></paper-input>
+        <paper-button id="submit" raised="" elevation="1" name="submit" on-click="_delayedSubmit" type="submit">
+          <paper-spinner id="spinner" hidden=""></paper-spinner>
+          Registrieren
+        </paper-button>
+      </form>
+    </iron-form>    
+
+    <div class="links">
+      <paper-button on-click="to_login">Zum Login</paper-button>
+    </div>
+    <div class="notification"></div>
+  </template>
+
+  <script>
+
+    class RegisterView extends Polymer.Element {
+      static get is() { return 'register-view'; }
+
+      ready() {
+        super.ready();
+        //add change event listener for validation
+        this.$.register_form.addEventListener('change', () => this._trigger_validation());
+      }
+
+      _trigger_validation() {      
+        let regFormSubmit = this.$.submit;
+        let regForm = this.$.register_form;
+
+        //dont make check on change before submit
+        if (regFormSubmit.disabled == true && regForm.validate()) {
+          regFormSubmit.disabled = false;
+        }
+      }
+
+      _delayedSubmit(event) {
+          let regForm = this.$.register_form;
+          let regFormSubmit = this.$.submit;
+          // let spinner = this.$.spinner;
+          // spinner.active = true;
+          // spinner.hidden = false;
+          regFormSubmit.disabled = true;
+
+          if (regForm.validate()) {
+            console.log("submit");
+            this._submit();
+          }
+
+      }
+      _submit() {
+
+        //userdata
+        let requestBody = [this.name, this.email, this.pw];
+        this.$.registerRequest.body = requestBody;
+
+        //trigger request
+        this.$.registerRequest.generateRequest();    
+      }
+
+      registerResponse(data) {
+        let response = data.detail.response;
+
+        //registration successfull
+        console.log(response[0]);
+        if (response[0] == "true")
+        {
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "<p>Registrierung erfolgreich</p>";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.remove('warning');          
+          Polymer.dom(this.root).querySelector('.notification').classList.add('success');          
+
+          setTimeout(function() {
+            // console.log("submit success");
+            this._routeToPage('register-confirm');
+          }.bind(this), 1000);
+        } else {
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "<p>Registrierung fehlgeschlagen</p>";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.add('warning');
+          setTimeout(function() {
+            console.log("submit error");
+            this.$.submit.disabled = false;
+          }.bind(this), 1000);          
+        }        
+      }      
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
+
+      to_login() {
+        this._routeToPage('login');
+      }
+
+    }
+
+    window.customElements.define(RegisterView.is, RegisterView);
+  </script>
+</dom-module>

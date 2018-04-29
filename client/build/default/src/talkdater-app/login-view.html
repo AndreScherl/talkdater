@@ -1,0 +1,97 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="login-view">
+  <template>
+    <style include="shared-styles">
+
+      #login {
+        float: right;
+        width: 120px;
+      }
+
+      .links paper-button {
+        color: grey;
+        margin-top: 10px;
+        font-size: 70%;
+      }
+            
+    </style>
+
+    <iron-ajax id="loginRequest" method="get" url="/data/login" handle-as="json" on-response="loginResponse"></iron-ajax>
+     <!-- on-error="handleError" -->
+     <!-- content-type="application/json" -->
+     <!-- verbose=true -->
+
+
+    <h1>Login</h1>
+    <div class="notification"></div>
+    <paper-input id="user_input" name="user" value="{{email}}" label="E-Mail"></paper-input>
+    <paper-input id="password_input" name="password" value="{{password}}" class="submit_margin" label="Passwort" type="password"></paper-input>
+    <paper-button id="login" on-click="login" raised="" elevation="1">Login</paper-button>
+    
+    <div class="links">
+      <paper-button on-click="forgot_password">Passwort vergessen</paper-button>
+      <paper-button on-click="register">Registrieren</paper-button>
+    </div>
+
+  </template>
+
+  <script>
+    class LoginView extends Polymer.Element {
+      static get is() { return 'login-view'; }
+
+      login() {
+        //userdata
+        let requestBody = [this.email, this.password]
+        // console.log(requestBody);
+        this.$.loginRequest.body = requestBody;
+
+        //trigger request
+        this.$.loginRequest.generateRequest();
+      }
+
+      loginResponse(data) {
+        let response = data.detail.response;
+        console.log(response);
+        console.log(response[0]);
+
+        //first element of response aŕray could be true or false
+        if ( response[0] == "true" ) {
+          //login succesfull route to dashboard view
+          this._routeToPage('dashboard');
+        } else {
+          //login failed notification
+          Polymer.dom(this.root).querySelector('.notification').innerHTML = "Login fehlgeschlagen";
+          Polymer.dom(this.root).querySelector('.notification').classList.add('show');
+          Polymer.dom(this.root).querySelector('.notification').classList.add('warning');
+
+          //hide message after timeout
+          setTimeout(function() {
+            Polymer.dom(this.root).querySelector('.notification').classList.remove('show');;
+          }.bind(this), 5000);
+        }        
+      }
+
+      handleError(error) {
+        alert(error);
+      }
+
+      forgot_password() {
+        this._routeToPage('reset-password');
+      }
+
+      register() {
+        this._routeToPage('register');
+      }
+
+      _routeToPage(page) {
+        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
+      }
+    }
+
+    window.customElements.define(LoginView.is, LoginView);
+  </script>
+</dom-module>

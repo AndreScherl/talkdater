@@ -3,15 +3,11 @@ version: '3'
 services:
   mongodb:
     container_name: talkdater_mongo
-    image: "mongo"
+    build: ./mongodb
     ports:
       - "27017:27017"
     networks:
       - dockernet
-    # environment:
-    #   - MONGO_INITDB_ROOT_USERNAME=admin
-    #   - MONGO_INITDB_ROOT_PASSWORD=nimda
-    #   - MONGO_INITDB_DATABASE=talkdater
 
   api:
     container_name: talkdater_api
@@ -24,6 +20,7 @@ services:
       - dockernet
     environment:
       - NODE_ENV=development
+    restart: always
 
   client:
     container_name: talkdater_client

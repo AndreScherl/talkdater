@@ -67,7 +67,7 @@
         //first element of response aŕray could be true or false
         if ( response[0] == "true" ) {
           //login succesfull route to dashboard view
-          this._routeToPage('dashboard');
+          this.go_to('/dashboard');
         } else {
           //login failed notification
           Polymer.dom(this.root).querySelector('.notification').innerHTML = "Login fehlgeschlagen";
@@ -86,16 +86,17 @@
       }
 
       forgot_password() {
-        this._routeToPage('reset-password');
+        this.go_to('/reset-password');
       }
 
       register() {
-        this._routeToPage('register');
+        this.go_to('/register');
       }
 
-      _routeToPage(page) {
-        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
-      }
+      go_to(x) {
+        window.history.pushState({}, null, x);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }      
     }
 
     window.customElements.define(LoginView.is, LoginView);

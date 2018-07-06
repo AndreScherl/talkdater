@@ -56,7 +56,7 @@
         //todo
         //delete from registry table
 
-        this._routeToPage('login');
+        this.go_to('/login');
       }
 
       submit() {
@@ -76,7 +76,7 @@
 
           //go to next page
           setTimeout(function() {
-            this._routeToPage('register-intro');
+            this.go_to('/register-intro');
           }.bind(this), 1600);          
         } else {
           //Validation failed notification
@@ -91,9 +91,10 @@
         }
       }
 
-      _routeToPage(page) {
-        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
-      }
+      go_to(x) {
+        window.history.pushState({}, null, x);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }       
     }
 
     window.customElements.define(RegisterConfirmView.is, RegisterConfirmView);

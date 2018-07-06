@@ -33,12 +33,13 @@
       static get is() { return 'register-intro-view'; }
 
       submit() {
-        this._routeToPage('dashboard');
+        this.go_to('/dashboard');
       }
 
-      _routeToPage(page) {
-        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
-      }
+      go_to(x) {
+        window.history.pushState({}, null, x);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }             
     }
 
     window.customElements.define(RegisterIntroView.is, RegisterIntroView);

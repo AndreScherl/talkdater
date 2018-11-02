@@ -57,8 +57,8 @@ const start = async () => {
                 en: require('./i18n/en.json')
             },
             urls: {
-                verifyEmail: config.get("host") + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
-                resetPassword: config.get("host") + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
+                verifyEmail: config.get("host") + "/api" + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
+                resetPassword: config.get("host") + "/api" + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
             },
             language: 'de'
         })

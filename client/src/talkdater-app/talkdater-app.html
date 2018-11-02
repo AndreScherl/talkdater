@@ -219,14 +219,19 @@
         this.page = e.detail.page;
       }
 
+      go_to(x) {
+        window.history.pushState({}, null, x);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }
+
       go_to_homescreen() {
         // todo - check logged in
         let logged_in = true;
 
         if (logged_in) {
-          this.page = 'dashboard';
+          this.go_to('/dashboard');
         } else {
-          this.page = 'login';
+          this.go_to('/login');
         }
       }
       go_to_settings() {
@@ -234,9 +239,9 @@
         let logged_in = true;
 
         if (logged_in) {
-          this.page = 'settings';
+          this.go_to('/settings');
         } else {
-          this.page = 'login';
+          this.go_to('/login');
         }
       }
       go_to_logout() {
@@ -245,7 +250,7 @@
 
         //todo - log out
         
-        this.page = 'login';
+        this.go_to('/login');
       
       }
 

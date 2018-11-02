@@ -112,7 +112,7 @@
 
           setTimeout(function() {
             // console.log("submit success");
-            this._routeToPage('register-confirm');
+            this.go_to('/register-confirm');
           }.bind(this), 1000);
         } else {
           Polymer.dom(this.root).querySelector('.notification').innerHTML = "<p>Registrierung fehlgeschlagen</p>";
@@ -125,12 +125,13 @@
         }        
       }      
 
-      _routeToPage(page) {
-        this.dispatchEvent(new CustomEvent('changepage', {detail: {page: page}, composed: true}));
-      }
+      go_to(x) {
+        window.history.pushState({}, null, x);
+        window.dispatchEvent(new CustomEvent('location-changed'));
+      }                   
 
       to_login() {
-        this._routeToPage('login');
+        this.go_to('/login');
       }
 
     }

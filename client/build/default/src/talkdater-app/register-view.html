@@ -22,7 +22,7 @@
 
     </style>
 
-  <iron-ajax id="registerRequest" method="get" url="/data/login" handle-as="json" on-response="registerResponse"></iron-ajax>
+  <iron-ajax id="registerRequest" method="post" url="/api/auth/local/register" handle-as="json" on-response="registerResponse"></iron-ajax>
     <!-- verbose=true -->    
 
     <h1>Registrieren</h1>
@@ -74,7 +74,7 @@
           // let spinner = this.$.spinner;
           // spinner.active = true;
           // spinner.hidden = false;
-          regFormSubmit.disabled = true;
+          // regFormSubmit.disabled = true;
 
           if (regForm.validate()) {
             console.log("submit");

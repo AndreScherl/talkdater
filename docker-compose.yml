@@ -12,8 +12,6 @@ services:
   api:
     container_name: talkdater_api
     build: ./api
-    ports:
-      - "3000:3000"
     depends_on:
       - mongodb
     networks:
@@ -24,7 +22,11 @@ services:
 
   client:
     container_name: talkdater_client
-    build: ./client
+    # build: ./client
+    image: httpd:alpine
+    volumes: 
+      # the following trick is for deve purposes only
+      - ./client/build/default/:/usr/local/apache2/htdocs/
     depends_on:
       - mongodb
       - api
@@ -33,9 +35,9 @@ services:
 
   reverseproxy:
     container_name: talkdater_proxy
-    build: ./reverseproxy
     ports:
-      - 8080:8080
+      - 80:8080
+    build: ./reverseproxy
     depends_on:
       - api
       - client

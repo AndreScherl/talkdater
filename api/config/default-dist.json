@@ -5,7 +5,7 @@
     "ooth": {
         "sessionSecret": "somesecret",
         "sharedSecret": "somesharedsecret",
-        "path": "/auth"
+        "path": "/api/auth"
     },
     "mongo": {
         "url": "mongodb://localhost:27017",

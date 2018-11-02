@@ -47,19 +47,18 @@ const start = async () => {
         await ooth.start(app, oothMongo)
 
         // settings for email interaction, including localization.
-        const url = config.get("host")+":"+config.get("port")
         const mailOnEvents = emailer({
             from: config.get("mail.from"),
             siteName: config.get("siteName"),
-            url: url,
+            url: config.get("host"),
             sendMail: mail(),
             translations: {
                 de: require('./i18n/de.json'),
                 en: require('./i18n/en.json')
             },
             urls: {
-                verifyEmail: url + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
-                resetPassword: url + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
+                verifyEmail: config.get("host") + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
+                resetPassword: config.get("host") + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
             },
             language: 'de'
         })

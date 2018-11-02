@@ -85,7 +85,13 @@
       _submit() {
 
         //userdata
-        let requestBody = [this.name, this.email, this.pw];
+        const email = this.email;
+        const password = this.pw;
+        let requestBody = JSON.stringify({
+          email,
+          password
+        });
+        this.$.registerRequest.headers = {'Content-Type': 'application/json'};
         this.$.registerRequest.body = requestBody;
 
         //trigger request

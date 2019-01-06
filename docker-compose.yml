@@ -5,7 +5,7 @@ services:
     container_name: talkdater_mongo
     build: ./mongodb
     ports:
-      - "27017:27017"
+      - 27017:27017
     networks:
       - dockernet
 

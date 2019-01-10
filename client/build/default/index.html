@@ -22,6 +22,30 @@
     </style>
   </head>
   <body>
+      <script>
+          function getUrlVars() {
+              var vars = {};
+              var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+                  vars[key] = value;
+              });
+              return vars;
+          }
+          
+          params = JSON.stringify(getUrlVars())
+          const http = new XMLHttpRequest();
+          const url='http://localhost/api/auth/local/verify';
+          http.open('POST', url, true);
+    
+          //Send the proper header information along with the request
+          http.setRequestHeader('Content-type', 'application/json');
+    
+          http.onreadystatechange = (e) => {//Call a function when the state changes.
+              if(http.readyState == 4 && http.status == 200) {
+                  alert(http.responseText);
+              }
+          }
+          http.send(params);
+        </script>
     <talkdater-app></talkdater-app>
   
 

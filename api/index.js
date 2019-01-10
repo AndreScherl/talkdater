@@ -18,24 +18,24 @@ const start = async () => {
         const client = await MongoClient.connect(mongo_cfg.url, {
             auth: {
                 user: mongo_cfg.user,
-                password: mongo_cfg.pwd
+                password: mongo_cfg.pwd,
             },
             authSource: mongo_cfg.db,
-            useNewUrlParser: true
+            useNewUrlParser: true,
         })
         const db = client.db(mongo_cfg.db)
         
         // new express instance, including ooth session
         const app = express()
         app.use(session({
-            name: 'api-session-id',
+            name: "api-session-id",
             secret: config.get("ooth.sessionSecret"),
             resave: false,
             saveUninitialized: true,
         }))
 
         // prevent x-powered-by attacks (see http://expressjs.com/en/advanced/best-practice-security.html#use-helmet)
-        app.disable('x-powered-by')
+        app.disable("x-powered-by")
 
         // connect ooth to mongodb backend with own api.
         const oothMongo = new OothMongo(db)
@@ -48,13 +48,10 @@ const start = async () => {
             path: config.get("ooth.path"),
         })
 
-        oothLocal({
-            ooth
-        })
+        // local strategy
+        oothLocal({ ooth })
 
-        oothUser({
-            ooth
-        })
+        oothUser({ ooth })
 
         // settings for email interaction, including localization.
         emailer({
@@ -64,45 +61,44 @@ const start = async () => {
             url: config.get("host"),
             sendMail: mail(),
             translations: {
-                de: require('./i18n/de.json'),
-                en: require('./i18n/en.json')
+                de: require("./i18n/de.json"),
+                en: require("./i18n/en.json"),
             },
             urls: {
                 verifyEmail: config.get("host") + "/api" + config.get("ooth.path") + config.get("mail.urls.verifyEmail"),
-                resetPassword: config.get("host") + "/api" + config.get("ooth.path") + config.get("mail.urls.resetPassword")   
+                resetPassword: config.get("host") + "/api" + config.get("ooth.path") + config.get("mail.urls.resetPassword"),
             },
-            language: 'de'
+            language: 'de',
         })
 
         // some events that may be implemented soon      
         ooth.on("local", "register", ({ email, verificationToken, _id }) => {
             console.log(`Someone registered.`)
-        });
+        })
         ooth.on(
             "local",
             "generate-verification-token",
             ({ email, verificationToken }) => {
-                console.log(`Someone requested a verification email.`);
+                console.log(`Someone requested a verification email.`)
             }
-        );
+        )
         ooth.on("local", "verify", ({ email }) => {
-            console.log(`Someone verified their email`);
-        });
+            console.log("Someone verified their email")
+        })
         ooth.on("local", "forgot-password", ({ email, passwordResetToken }) => {
-            console.log(`Someone forgot their password`);
-        });
+            console.log("Someone forgot their password")
+        })
         ooth.on("local", "reset-password", ({ email }) => {
-            console.log(`Someone reset their password`);
-        });
+            console.log("Someone reset their password")
+        })
 
         // define route for main entry of app.
         app.get("/", (req, res) => res.sendFile(`${__dirname}/index.html`))
 
         // start listenting for requests.
         await new Promise((res, rej) =>
-            //app.listen(config.get("port"), config.get("host"), e => (e ? rej(e) : res(e)))
             app.listen(config.get("port"), e => (e ? rej(e) : res(e)))
-            );
+        )
         console.info(`Online at ${config.get("host")}:${config.get("port")}`)
     } catch (e) {
         console.error(e)

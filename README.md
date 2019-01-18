@@ -38,3 +38,10 @@ Start the server `npm start`.
 |/api/auth/local/reset-password |`{ userId, token, newPassword }`   |Reset password     |
 |/api/auth/local/change-password|`{ password, newPassword }`        |Change password    |
 
+## Test API calls with curl
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/local/register --data '{"username":"peter@pan.net", "password":"Hello123!"}'`
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/local/login --data '{"username":"peter@pan.net", "password":"Hello123!"}'`
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/user/user`
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/local/set-username --data '{"username":"peter"}'`
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/local/login --data '{"username":"peter", "password":"Hello123!"}'`
+- `$ curl -X POST -H 'Content-Type: application/json' -b /path/to/cookiefile -c /path/to/cookiefile -i http://localhost/api/auth/session/logout`

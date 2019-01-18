@@ -25,14 +25,8 @@ const start = async () => {
         })
         const db = client.db(mongo_cfg.db)
         
-        // new express instance, including ooth session
+        // new express instance
         const app = express()
-        app.use(session({
-            name: "api-session-id",
-            secret: config.get("ooth.sessionSecret"),
-            resave: false,
-            saveUninitialized: true,
-        }))
 
         // prevent x-powered-by attacks (see http://expressjs.com/en/advanced/best-practice-security.html#use-helmet)
         app.disable("x-powered-by")
@@ -46,6 +40,12 @@ const start = async () => {
             backend: oothMongo,
             sharedSecret: config.get("ooth.sharedSecret"),
             path: config.get("ooth.path"),
+            session: session({
+                name: "api-session-id",
+                secret: config.get("ooth.sessionSecret"),
+                resave: false,
+                saveUninitialized: true,
+            }),
         })
 
         // local strategy

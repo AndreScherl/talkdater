@@ -12,7 +12,7 @@ services:
   api:
     container_name: talkdater_api
     build: ./api
-    command: nodemon index.js
+    command: nodemon public/index.js
     volumes:
       - ./api/:/usr/src/app/
     depends_on:

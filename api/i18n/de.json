@@ -1,32 +1,32 @@
 {
-    "welcome": {
-        "subject": "Willkommen bei {site-name}",
-        "body": "Schön, dass Sie bei {site-name} mitmachen!",
-        "html": "Schön, dass Sie bei {site-name} mitmachen!"
-    },
-    "verify-email": {
-        "subject": "Bestätigen Sie Ihre E-Mail Adresse für {site-name}",
-        "body": "Bitte bestätigen Sie Ihre E-Mail-Adresse für {site-name}, in dem Sie dem folgenden Link folgen: {verify-email-url}.",
-        "html": "Bitte bestätigen Sie Ihre E-Mail-Adresse für {site-name}, in dem Sie dem folgenden Link folgen: {verify-email-url}."
-    },
-    "email-verified": {
-        "subject": "E-Mail-Adresse für {site-name} bestätigt",
-        "body": "Ihre E-Mail-Adresse für {site-name} wurde erfolgreich bestätigt.",
-        "html": "Ihre E-Mail-Adresse für {site-name} wurde erfolgreich bestätigt."
-    },
-    "reset-password": {
-        "subject": "Zurücksetzen des Passworts für {site-name}",
-        "body": "Bitte setzen Sie Ihr Passwort für {site-name} auf der folgenden Seite zurück: {reset-password-url}",
-        "html": "Bitte setzen Sie Ihr Passwort für {site-name} auf der folgenden Seite zurück: {reset-password-url}"
-    },
-    "password-reset": {
-        "subject": "{site-name} Passwort zurückgesetzt",
-        "body": "Ihr Passwort für {site-name} wurde zurückgesetzt.",
-        "html": "Ihr Passwort für {site-name} wurde zurückgesetzt."
-    },
-    "password-changed": {
-        "subject": "{site-name} Passwort geändert",
-        "body": "Ihr Passwort für {site-name} wurde geändert.",
-        "html": "Ihr Passwort für {site-name} wurde geändert."
-    }
+  "welcome": {
+    "subject": "Willkommen bei {site-name}",
+    "body": "Schön, dass Sie bei {site-name} mitmachen!",
+    "html": "Schön, dass Sie bei {site-name} mitmachen!"
+  },
+  "verify-email": {
+    "subject": "Bestätigen Sie Ihre E-Mail Adresse für {site-name}",
+    "body": "Bitte bestätigen Sie Ihre E-Mail-Adresse für {site-name}, in dem Sie dem folgenden Link folgen: {verify-email-url}.",
+    "html": "Bitte bestätigen Sie Ihre E-Mail-Adresse für {site-name}, in dem Sie dem folgenden Link folgen: {verify-email-url}."
+  },
+  "email-verified": {
+    "subject": "E-Mail-Adresse für {site-name} bestätigt",
+    "body": "Ihre E-Mail-Adresse für {site-name} wurde erfolgreich bestätigt.",
+    "html": "Ihre E-Mail-Adresse für {site-name} wurde erfolgreich bestätigt."
+  },
+  "reset-password": {
+    "subject": "Zurücksetzen des Passworts für {site-name}",
+    "body": "Bitte setzen Sie Ihr Passwort für {site-name} auf der folgenden Seite zurück: {reset-password-url}",
+    "html": "Bitte setzen Sie Ihr Passwort für {site-name} auf der folgenden Seite zurück: {reset-password-url}"
+  },
+  "password-reset": {
+    "subject": "{site-name} Passwort zurückgesetzt",
+    "body": "Ihr Passwort für {site-name} wurde zurückgesetzt.",
+    "html": "Ihr Passwort für {site-name} wurde zurückgesetzt."
+  },
+  "password-changed": {
+    "subject": "{site-name} Passwort geändert",
+    "body": "Ihr Passwort für {site-name} wurde geändert.",
+    "html": "Ihr Passwort für {site-name} wurde geändert."
+  }
 }
